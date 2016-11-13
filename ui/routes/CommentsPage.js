@@ -32,7 +32,10 @@ const SUBSCRIPTION_QUERY = gql`
 class CommentsPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { errors: false };
+    this.state = {
+      errors: false,
+      canSubmit: true,
+    };
     this.submitForm = this.submitForm.bind(this);
 
     // keep track of subscription handle to not subscribe twice.
@@ -75,11 +78,15 @@ class CommentsPage extends React.Component {
     const commentContent = this.newCommentInput.value;
 
     if (commentContent) {
+      this.setState({ canSubmit: false });
+
       submit({
         repoFullName,
         commentContent,
         currentUser,
       }).then((res) => {
+        this.setState({ canSubmit: true });
+
         if (!res.errors) {
           this.newCommentInput.value = '';
         } else {
@@ -121,7 +128,7 @@ class CommentsPage extends React.Component {
               </div>
             )}
 
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" disabled={!canSubmit} className="btn btn-primary">
               Submit
             </button>
           </form> : <div><em>Log in to comment.</em></div>}
