@@ -98,7 +98,7 @@ class CommentsPage extends React.Component {
 
   render() {
     const { loading, currentUser, entry } = this.props;
-    const { errors } = this.state;
+    const { errors, canSubmit } = this.state;
 
     if (loading) {
       return <div>Loading...</div>;
